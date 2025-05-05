@@ -8,17 +8,9 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
   server: {
-    https: true,
+    https: false,
     hmr: {
       host: 'localhost'
-    },
-    headers: {
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self';",
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
     }
   },
   build: {
@@ -27,25 +19,10 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true,
-        keep_fnames: false,
-        keep_classnames: false
-      },
-      mangle: {
-        toplevel: true
-      },
-      output: {
-        comments: false
+        drop_debugger: true
       }
     },
-    chunkSizeWarningLimit: 500,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom']
-        }
-      }
-    }
+    chunkSizeWarningLimit: 500
   },
   define: {
     'process.env': {}
