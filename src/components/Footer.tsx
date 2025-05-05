@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { sanitizeInput, handleExternalLinks } from '../utils/security';
 
 const Modal: React.FC<{ open: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({
   open,
@@ -18,7 +19,19 @@ const Modal: React.FC<{ open: boolean; onClose: () => void; title: string; child
           &times;
         </button>
         <h2 className="text-xl font-bold mb-4">{title}</h2>
-        <div className="max-h-[60vh] overflow-y-auto">{children}</div>
+        <div className="max-h-[60vh] overflow-y-auto">
+      {React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, {
+            href: child.props.href ? handleExternalLinks(child.props.href) : child.props.href,
+            dangerouslySetInnerHTML: child.props.dangerouslySetInnerHTML
+              ? { __html: sanitizeInput(child.props.dangerouslySetInnerHTML.__html) }
+              : child.props.dangerouslySetInnerHTML
+          });
+        }
+        return child;
+      })}
+    </div>
       </div>
     </div>
   );
