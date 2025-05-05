@@ -124,7 +124,7 @@ A production-ready web application that helps tech professionals prepare for rea
 
 ### Architecture Overview
 
-![System Architecture](docs/images/system-architecture.png)
+![System Architecture](images/system-architecture.png)
 
 The system is built with a modern, component-based architecture that emphasizes real-world data integration. Key architectural components include:
 
