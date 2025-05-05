@@ -39,7 +39,8 @@ const learningResources = [
 ];
 
 const Learn: React.FC = () => (
-  <section>
+  <div className="flex flex-col min-h-screen">
+    <section className="flex-1 overflow-y-auto p-4 md:p-8 max-w-7xl mx-auto">
     <h2 className="text-3xl font-bold text-center text-indigo-900 dark:text-white mb-8">Learn & Practice</h2>
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
       {learningResources.map(resource => (
@@ -61,7 +62,8 @@ const Learn: React.FC = () => (
     <div className="mt-10 text-center text-gray-500 dark:text-gray-400 text-sm">
       All links open in a new tab. Happy learning!
     </div>
-  </section>
+    </section>
+  </div>
 );
 
 export default Learn; 
