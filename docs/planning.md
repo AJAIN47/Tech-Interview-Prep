@@ -123,72 +123,17 @@ A production-ready web application that helps tech professionals prepare for rea
 ## 4. System Design
 
 ### Architecture Overview
-```
-graph TD
-    A[Frontend Application] --> B[React Components]
-    B --> C[CompanyList]
-    B --> D[CompanyCard]
-    B --> E[CompanyDetail]
-    B --> F[Header]
-    B --> G[Footer]
-    B --> H[Filters]
-    
-    subgraph Data Layer
-        I[Company Data Store]
-        J[Interview Patterns]
-        K[Career Pages]
-        L[YouTube Resources]
-    end
-    
-    subgraph State Management
-        M[React Context]
-        N[Redux Store]
-    end
-    
-    subgraph UI Components
-        C
-        D
-        E
-        F
-        G
-        H
-    end
-    
-    subgraph Styling
-        O[Tailwind CSS]
-        P[Lucide Icons]
-    end
-    
-    subgraph Routing
-        Q[React Router]
-    end
-    
-    subgraph Data Flow
-        R[Real-time Search]
-        S[Filtering]
-        T[Data Aggregation]
-    end
-    
-    I --> C
-    I --> D
-    I --> E
-    J --> C
-    J --> D
-    J --> E
-    K --> E
-    L --> E
-    
-    M --> B
-    N --> B
-    
-    O --> B
-    P --> B
-    Q --> B
-    
-    R --> B
-    S --> B
-    T --> B
-```
+
+![System Architecture](docs/images/system-architecture.png)
+
+The system is built with a modern, component-based architecture that emphasizes real-world data integration. Key architectural components include:
+
+1. **UI Components**: React-based components that form the user interface
+2. **Data Layer**: Contains real-world company data, interview patterns, and career resources
+3. **State Management**: Uses React Context for state management
+4. **Styling**: Utilizes Tailwind CSS for styling and Lucide Icons for UI elements
+5. **Routing**: Implements React Router for navigation
+6. **Data Flow**: Handles real-time search, filtering, and data aggregation
 
 ### Technical Stack
 - **Framework**: React with TypeScript
