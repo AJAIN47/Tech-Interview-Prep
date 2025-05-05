@@ -22,11 +22,19 @@ const Modal: React.FC<{ open: boolean; onClose: () => void; title: string; child
         <div className="max-h-[60vh] overflow-y-auto">
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
+          // Sanitize href attribute
+          const sanitizedHref = child.props.href ? handleExternalLinks(child.props.href) : '#';
+          
+          // Remove any unsafe attributes
+          const sanitizedProps = Object.entries(child.props)
+            .filter(([key]) => !key.startsWith('on') && key !== 'dangerouslySetInnerHTML')
+            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+          
           return React.cloneElement(child, {
-            href: child.props.href ? handleExternalLinks(child.props.href) : child.props.href,
-            dangerouslySetInnerHTML: child.props.dangerouslySetInnerHTML
-              ? { __html: sanitizeInput(child.props.dangerouslySetInnerHTML.__html) }
-              : child.props.dangerouslySetInnerHTML
+            ...sanitizedProps,
+            href: sanitizedHref,
+            target: sanitizedHref.startsWith('http') ? '_blank' : '_self',
+            rel: sanitizedHref.startsWith('http') ? 'noopener noreferrer' : undefined
           });
         }
         return child;
