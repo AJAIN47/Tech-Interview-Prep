@@ -1,13 +1,35 @@
 import React, { useState } from 'react';
 import { sanitizeInput, handleExternalLinks } from '../utils/security';
 
-const Modal: React.FC<{ open: boolean; onClose: () => void; title: string; children: React.ReactNode }> = ({
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({
   open,
   onClose,
   title,
   children,
 }) => {
   if (!open) return null;
+  
+  const sanitizedChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      const props = {
+        ...child.props,
+        href: child.props.href ? handleExternalLinks(child.props.href) : child.props.href,
+        dangerouslySetInnerHTML: child.props.dangerouslySetInnerHTML
+          ? { __html: sanitizeInput(child.props.dangerouslySetInnerHTML.__html) }
+          : child.props.dangerouslySetInnerHTML
+      };
+      return React.cloneElement(child, props);
+    }
+    return child;
+  });
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white text-black dark:bg-black dark:text-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
@@ -20,18 +42,8 @@ const Modal: React.FC<{ open: boolean; onClose: () => void; title: string; child
         </button>
         <h2 className="text-xl font-bold mb-4">{title}</h2>
         <div className="max-h-[60vh] overflow-y-auto">
-      {React.Children.map(children, child => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, {
-            href: child.props.href ? handleExternalLinks(child.props.href) : child.props.href,
-            dangerouslySetInnerHTML: child.props.dangerouslySetInnerHTML
-              ? { __html: sanitizeInput(child.props.dangerouslySetInnerHTML.__html) }
-              : child.props.dangerouslySetInnerHTML
-          });
-        }
-        return child;
-      })}
-    </div>
+          {sanitizedChildren}
+        </div>
       </div>
     </div>
   );
